@@ -146,6 +146,8 @@ public class FirstTestCase {
 			  WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
 			  save_rule.click(); Thread.sleep(3000);
 			  
+			    
+			  
 			   
 			 
 			  
