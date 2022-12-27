@@ -5,9 +5,11 @@ package Rule_list;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -32,8 +34,7 @@ public class FirstTestCase {
 		   
 			 // excelinit
 			 
-			 File excel=new File(excelFilePath); FileInputStream inputstream=new
-			 FileInputStream(excelFilePath);
+			  FileInputStream inputstream=new FileInputStream(excelFilePath);
 			 
 			 XSSFWorkbook workbook = new XSSFWorkbook(inputstream); // XSSFSheet
 			 XSSFSheet sheet=workbook.getSheet("sheet1"); //Providing sheet name XSSFSheet
@@ -85,16 +86,16 @@ public class FirstTestCase {
 			 Thread.sleep(35000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
-			 Thread.sleep(3000);
+			 Thread.sleep(5000);
 			 
 			 for (int r=1;r<=rowCount;r++)
 			 {
 			 WebElement createrule = driver.findElement(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")); 
 			 createrule.click(); 
 			 Thread.sleep(3000);
-			 WebElement element=driver.findElement(By.xpath("//table[@class='table word-warp table-space']/tbody//tr[last()]"));
-			 JavascriptExecutor js = (JavascriptExecutor)driver;
-			 js.executeScript("arguments[0].scrollIntoView();", element);
+			// WebElement element=driver.findElement(By.xpath("//table[@class='table word-warp table-space']/tbody//tr[last()]"));
+			 //JavascriptExecutor js = (JavascriptExecutor)driver;
+			 //js.executeScript("arguments[0].scrollIntoView();", element);
 			 
 			 Thread.sleep(3000);
 			 
@@ -231,6 +232,29 @@ public class FirstTestCase {
 			 save_rule.click(); Thread.sleep(3000);
 			 System.out.println("Save Clicked");
 			 
+
+
+			// WebElement rule_success = driver.findElement(By.xpath("//div[text()='Rule Created Successfully']"));
+			 WebElement rule_exist = driver.findElement(By.xpath("//div[text()='Rule already exist for the given combination']"));
+			 //create a new cell in the row at index 6
+			 XSSFCell cell = sheet.getRow(r).createCell(13);
+			 
+			 //check if confirmation message is displayed
+			 if (rule_exist.isDisplayed()) {
+				 // if the message is displayed , write PASS in the excel sheet
+				 cell.setCellValue("Rule Already Exist");
+				 
+			 }    //else if(rule_exist.isDisplayed()) {
+				  //if the message is not displayed , write FAIL in the excel sheet
+				 // cell.setCellValue("Already Exist");
+			     //}
+			 else{
+
+				cell.setCellValue("FAILED");
+			 }
+			 // Write the data back in the Excel file
+			 FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+			 workbook.write(outputStream);
 			   
 			 
 			  
