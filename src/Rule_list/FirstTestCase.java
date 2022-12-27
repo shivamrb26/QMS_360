@@ -162,11 +162,28 @@ public class FirstTestCase {
 			 System.out.println("IC "+ic+" selected");
 			 Thread.sleep(3000);
 			 
+			 // Issue Type Selection
 			 WebElement issue_type = driver.findElement(By.xpath("//span[text()='Issue Type']"));
-			 issue_type.click(); Thread.sleep(3000);
-					 
+			 issue_type.click(); Thread.sleep(2000);
+
+			 String issue=sheet.getRow(r).getCell(4).getStringCellValue();
+				
+			 WebElement issue_type_selected= driver.findElement(By.xpath("//div[text()='"+issue+"']")); 
+			 issue_type_selected.click();
+			 System.out.println("Issue_Type "+issue+" selected");
+			 Thread.sleep(3000);
+
+			 // Issue sub-Type Selection
 			 WebElement issue_subtype = driver.findElement(By.xpath("//span[text()='Issue Sub Type']"));
-			 issue_subtype.click(); Thread.sleep(3000);
+			 issue_subtype.click(); Thread.sleep(2000);
+
+			 String sub_issue=sheet.getRow(r).getCell(5).getStringCellValue();
+				
+			 WebElement issue_subtype_selected= driver.findElement(By.xpath("//div[text()='"+sub_issue+"']")); 
+			 issue_subtype_selected.click();
+			 System.out.println("Issue sub-Type "+sub_issue+" selected");
+			 Thread.sleep(3000);
+
 					 
 			 WebElement channel1 = driver.findElement(By.xpath("//input[@name='createL0MappingValue']"));
 			 channel1.click(); Thread.sleep(3000);
@@ -174,18 +191,45 @@ public class FirstTestCase {
 			
 			 WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
 			 tat_format.click(); Thread.sleep(3000);
+
 			 
+			 //TAT 1 selection
 			 WebElement tat_1 = driver.findElement(By.xpath("//input[@name='TATL1RuleDays']"));
-			 tat_1.click(); Thread.sleep(3000);
+			 tat_1.click(); Thread.sleep(2000);
 			 
+			 Double tat1=sheet.getRow(r).getCell(10).getNumericCellValue();
+			 int value1 = (int)Math.round(tat1);
+			
+			 tat_1.sendKeys(String.valueOf(value1));
+			 System.out.println("Entered TAT-1 value is "+String.valueOf(value1)+ ".");
+			 Thread.sleep(3000);
+			 
+
+            //TAT 2 selection
 			 WebElement tat_2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
-			 tat_2.click(); Thread.sleep(3000);
+			 tat_2.click(); Thread.sleep(2000);
 			 
+			 Double tat2=sheet.getRow(r).getCell(11).getNumericCellValue();
+			 int value2 = (int)Math.round(tat2);
+			
+			 tat_2.sendKeys(String.valueOf(value2));
+			 System.out.println("Entered TAT-1 value is "+String.valueOf(value2)+ ".");
+			 Thread.sleep(3000);
+
+            //TAT 3 selection
 			 WebElement tat_3 = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
-			 tat_3.click(); Thread.sleep(3000);
+			 tat_3.click(); Thread.sleep(2000);
+			 Double tat3=sheet.getRow(r).getCell(12).getNumericCellValue();
+			 int value3 = (int)Math.round(tat3);
+			
+			 tat_3.sendKeys(String.valueOf(value3));
+			 System.out.println("Entered TAT-1 value is "+String.valueOf(value3)+ ".");
+			 Thread.sleep(3000);
+			 
 			 
 			 WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
 			 save_rule.click(); Thread.sleep(3000);
+			 System.out.println("Save Clicked");
 			 
 			   
 			 
