@@ -7,6 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -23,6 +27,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Excel_Functions.Excel_Functions;
+import io.netty.handler.codec.marshalling.ThreadLocalUnmarshallerProvider;
 
 public class FirstTestCase {
 	
@@ -34,14 +39,14 @@ public class FirstTestCase {
 		   
 			 // excelinit
 			 
-			  FileInputStream inputstream=new FileInputStream(excelFilePath);
+			FileInputStream inputstream=new FileInputStream(excelFilePath);
 			 
 			 XSSFWorkbook workbook = new XSSFWorkbook(inputstream); // XSSFSheet
 			 XSSFSheet sheet=workbook.getSheet("sheet1"); //Providing sheet name XSSFSheet
 			 sheet=workbook.getSheetAt(0);
 			
 			 int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();
-				int cols=sheet.getRow(0).getLastCellNum();
+			 int cols=sheet.getRow(0).getLastCellNum();
 				
 				
 			   
@@ -60,19 +65,19 @@ public class FirstTestCase {
 			  
 		   
 			 System.setProperty("webdriver.chrome.driver","/home/shivamsharma/Downloads/chromedriver"); 
-			 WebDriver driver = new ChromeDriver();
+	      	 WebDriver driver = new ChromeDriver();
 			 driver.manage().window().maximize();
-			 driver.get("http://qms360.sleepuat.renewbuy.in/");
+			 driver.get("https://www.renewbuy.com/qms360/");
 			 
 			 
 			 WebElement uName = driver.findElement(By.xpath("//*[@id='email']"));
 			 WebElement pswd =driver.findElement(By.xpath("//*[@id='exampleInputPolicy']"));
 			 
 			 WebElement loginBtn =
-			 driver.findElement(By.xpath("//button[@type='submit']"));
+			 driver.findElement(By.xpath("//button[@type='submit' and contains(., 'Sign In')]"));
 			 
 			 
-			 uName.sendKeys("admin@renewbuy.in"); pswd.sendKeys("test");
+			 uName.sendKeys("qmsadmin@renewbuy.com"); pswd.sendKeys("qmsadmin@2468");
 			 Thread.sleep(2000);
 			 
 			 loginBtn.click(); 
@@ -83,7 +88,7 @@ public class FirstTestCase {
 			 Thread.sleep(2000);
 			 WebElement master_list = driver.findElement(By.xpath("//span[@class='d-none f-14 d-lg-inline fontsubmenu' and contains(., 'Master List')]")); 
 			 master_list.click(); 
-			 Thread.sleep(35000);
+			 Thread.sleep(60000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
 			 Thread.sleep(5000);
@@ -97,16 +102,19 @@ public class FirstTestCase {
 			 //JavascriptExecutor js = (JavascriptExecutor)driver;
 			 //js.executeScript("arguments[0].scrollIntoView();", element);
 			 
-			 Thread.sleep(3000);
+			//  Thread.sleep(3000);
 			 
-		   // MISP Name selection  
+		  // MISP Name selection  
 			 WebElement misp_name = driver.findElement(By.
 			 xpath("//span[@class='dropdown-btn']//span[text()='Misp Name']"));
 			 misp_name.click(); 
-			 String mispname=sheet.getRow(r).getCell(0).getStringCellValue().toUpperCase();
+			 String mispname=sheet.getRow(r).getCell(0).getStringCellValue();
+			 if (mispname.equals("All")){
+				mispname="Select All";
+			 }
 			// String mispnew=mispname.toUpperCase();
 			// System.out.println(mispnew);
-			// WebElement misp_name_search = driver.findElement(By.xpath("//li//input[@placeholder='Search']"));
+			WebElement misp_name_search = driver.findElement(By.xpath("//li//input[@placeholder='Search']"));
 		   
 	   //	  misp_name_search.click();
 			// misp_name_search.sendKeys(mispname);
@@ -122,25 +130,33 @@ public class FirstTestCase {
 			 xpath("//span[@class='dropdown-btn']//span[text()='Dealer Code']"));
 			 dealer_code.click(); 
 			 Thread.sleep(2000);
-			 String dealer_code_name=sheet.getRow(r).getCell(1).getStringCellValue().toLowerCase();
-			
+			 String dealer_code_name=sheet.getRow(r).getCell(1).getStringCellValue();
+			 if (dealer_code_name.equals("All")){
+				dealer_code_name="Select All";
+			 }
 			 WebElement dealer_code_selected= driver.findElement(By.xpath("//div[text()='"+dealer_code_name+"']")); 
 			 dealer_code_selected.click();
 			System.out.println("Dealer "+dealer_code_name+" selected");
 			Thread.sleep(3000);
 			
 	// Workshop code selected
-			 
-			 WebElement workshop_code = driver.findElement(By.
-			 xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
+	        
+			 WebElement workshop_code = driver.findElement(By.xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
 			 workshop_code.click(); Thread.sleep(3000);
-			 String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue().toLowerCase();
-			
-				
+			 String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue();
+			if(workshop_code_name.isEmpty()){
+
+				workshop_code.click(); Thread.sleep(1000);
+
+			}
+			else{
 			 WebElement workshop_code_selected= driver.findElement(By.xpath("//div[text()='"+workshop_code_name+"']")); 
 			 workshop_code_selected.click();
 			 System.out.println("Workshop "+workshop_code_name+" selected");
 			 Thread.sleep(3000);
+			 
+
+				}
 			 
 			 
 	 //policy type selection 
@@ -188,74 +204,95 @@ public class FirstTestCase {
 	// Channel Mappings		 
 			 WebElement channel1 = driver.findElement(By.xpath("//input[@name='createL0MappingValue']"));
 			 channel1.click(); Thread.sleep(3000);
-			
-	// TAT Format
-			 WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
-			 tat_format.click(); Thread.sleep(3000);
+	
 
 			 
 	//TAT 1 selection
-			 WebElement tat_1 = driver.findElement(By.xpath("//input[@name='TATL1RuleDays']"));
-			 tat_1.click(); Thread.sleep(2000);
-			 
-			 Double tat1=sheet.getRow(r).getCell(10).getNumericCellValue();
-			 int value1 = (int)Math.round(tat1);
 			
-			 tat_1.sendKeys(String.valueOf(value1));
-			 System.out.println("Entered TAT-1 value is "+String.valueOf(value1)+ ".");
-			 Thread.sleep(3000);
+			Date tat1hrs=sheet.getRow(r).getCell(10).getDateCellValue();
+			if(tat1hrs != null){
+			WebElement tat_1hrs = driver.findElement(By.xpath("//input[@name='TATL1Rule']"));
+			  tat_1hrs.click(); Thread.sleep(2000);
+			// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
+			SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+			String timeStamp =formatTime.format(tat1hrs);
+			tat_1hrs.sendKeys(String.valueOf(timeStamp));
+            System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp)+ ".");
+			Thread.sleep(3000);
+		}
+		else{
+					
+	// TAT Format
+	WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
+	tat_format.click(); Thread.sleep(3000);  
+
+             WebElement days_path = driver.findElement(By.xpath("//input[@name='TATL1RuleDays']"));
 			 
+			 days_path.click(); Thread.sleep(2000);
+			 
+			 Double tat1days=sheet.getRow(r).getCell(11).getNumericCellValue();
+			  int value_tat1 = (int)Math.round(tat1days);
+			
+			
+			 days_path.sendKeys(String.valueOf(value_tat1));
+			 System.out.println("Entered TAT-1(Days) value is "+String.valueOf(value_tat1)+ ".");
+			 Thread.sleep(3000);
+
+
+
+
+		}
 
     //TAT 2 selection
-			 WebElement tat_2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
-			 tat_2.click(); Thread.sleep(2000);
+			//  WebElement tat_2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
+			//  tat_2.click(); Thread.sleep(2000);
 			 
-			 Double tat2=sheet.getRow(r).getCell(11).getNumericCellValue();
-			 int value2 = (int)Math.round(tat2);
+			//  Double tat2=sheet.getRow(r).getCell(11).getNumericCellValue();
+			//  int value2 = (int)Math.round(tat2);
 			
-			 tat_2.sendKeys(String.valueOf(value2));
-			 System.out.println("Entered TAT-1 value is "+String.valueOf(value2)+ ".");
-			 Thread.sleep(3000);
+			//  tat_2.sendKeys(String.valueOf(value2));
+			//  System.out.println("Entered TAT-1 value is "+String.valueOf(value2)+ ".");
+			//  Thread.sleep(3000);
 
     //TAT 3 selection
-			 WebElement tat_3 = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
-			 tat_3.click(); Thread.sleep(2000);
-			 Double tat3=sheet.getRow(r).getCell(12).getNumericCellValue();
-			 int value3 = (int)Math.round(tat3);
+			//  WebElement tat_3 = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
+			//  tat_3.click(); Thread.sleep(2000);
+			//  Double tat3=sheet.getRow(r).getCell(12).getNumericCellValue();
+			//  int value3 = (int)Math.round(tat3);
 			
-			 tat_3.sendKeys(String.valueOf(value3));
-			 System.out.println("Entered TAT-1 value is "+String.valueOf(value3)+ ".");
-			 Thread.sleep(3000);
+			//  tat_3.sendKeys(String.valueOf(value3));
+			//  System.out.println("Entered TAT-1 value is "+String.valueOf(value3)+ ".");
+			//  Thread.sleep(3000);
 			 
-	// Save Button click 
-			 WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
-			 save_rule.click(); Thread.sleep(3000);
-			 System.out.println("Save Clicked");
+	// // Save Button click 
+	// 		 WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
+	// 		 save_rule.click(); Thread.sleep(3000);
+	// 		 System.out.println("Save Clicked");
 			 
 
     // Sheet status update 
-	
-			// WebElement rule_success = driver.findElement(By.xpath("//div[text()='Rule Created Successfully']"));
-			 WebElement rule_exist = driver.findElement(By.xpath("//div[text()='Rule already exist for the given combination']"));
-			 //create a new cell in the row at index 6
-			 XSSFCell cell = sheet.getRow(r).createCell(13);
-			 
-			 //check if confirmation message is displayed
-			 if (rule_exist.isDisplayed()) {
-				 // if the message is displayed , write PASS in the excel sheet
-				 cell.setCellValue("Rule Already Exist");
-				 
-			 }    //else if(rule_exist.isDisplayed()) {
-				  //if the message is not displayed , write FAIL in the excel sheet
-				 // cell.setCellValue("Already Exist");
-			     //}
-			 else{
 
-				cell.setCellValue("FAILED");
-			 }
-			 // Write the data back in the Excel file
-			 FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-			 workbook.write(outputStream);
+			//  WebElement rule_success = driver.findElement(By.xpath("//div[text()='Rule Created Successfully']"));
+			// // WebElement rule_exist = driver.findElement(By.xpath("//div[text()='Rule already exist for the given combination']"));
+			//  //create a new cell in the row at index 6
+			//  XSSFCell cell = sheet.getRow(r).createCell(13);
+			 
+			//  //check if confirmation message is displayed
+			//  if (rule_success.isDisplayed()) {
+			// 	 // if the message is displayed , write PASS in the excel sheet
+			// 	 cell.setCellValue("Rule created");
+				 
+			//  }    //else if(rule_exist.isDisplayed()) {
+			// 	  //if the message is not displayed , write FAIL in the excel sheet
+			// 	 // cell.setCellValue("Already Exist");
+			//      //}
+			//  else{
+
+			// 	cell.setCellValue("FAILED");
+			//  }
+			//  // Write the data back in the Excel file
+			//  FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+			//  workbook.write(outputStream);
 			   
 			 
 			  
