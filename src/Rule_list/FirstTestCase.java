@@ -8,9 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -20,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -78,6 +81,7 @@ public class FirstTestCase {
 			 
 			 
 			 uName.sendKeys("qmsadmin@renewbuy.com"); pswd.sendKeys("qmsadmin@2468");
+			 //uName.sendKeys("admin@renewbuy.in"); pswd.sendKeys("test");
 			 Thread.sleep(2000);
 			 
 			 loginBtn.click(); 
@@ -91,13 +95,25 @@ public class FirstTestCase {
 			 Thread.sleep(60000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
-			 Thread.sleep(5000);
+			 Thread.sleep(10000);
+			 WebElement ops_rule=driver.findElement(By.xpath("//button[@id='opsId']"));
+			 ops_rule.click();
+			 Thread.sleep(2000);
 			 
-			 for (int r=1;r<=rowCount;r++)
+			 for (int r=16;r<=rowCount;r++)
 			 {
+Thread.sleep(6000);
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+Boolean visible = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.and(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
+				ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
+				ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]"))));
+
 			 WebElement createrule = driver.findElement(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")); 
-			 createrule.click(); 
-			 Thread.sleep(3000);
+			// WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+		     //WebElement element = wait.until(ExpectedConditions.elementToBeClickable(createrule));
+			if(visible==true){createrule.click(); 
+				Thread.sleep(3000);}
+			 
 			// WebElement element=driver.findElement(By.xpath("//table[@class='table word-warp table-space']/tbody//tr[last()]"));
 			 //JavascriptExecutor js = (JavascriptExecutor)driver;
 			 //js.executeScript("arguments[0].scrollIntoView();", element);
@@ -141,22 +157,22 @@ public class FirstTestCase {
 			
 	// Workshop code selected
 	        
-			 WebElement workshop_code = driver.findElement(By.xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
-			 workshop_code.click(); Thread.sleep(3000);
-			 String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue();
-			if(workshop_code_name.isEmpty()){
+			//  WebElement workshop_code = driver.findElement(By.xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
+			//  workshop_code.click(); Thread.sleep(3000);
+			//  String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue();
+			// if(workshop_code_name.isEmpty()){
 
-				workshop_code.click(); Thread.sleep(1000);
+			// 	workshop_code.click(); Thread.sleep(1000);
 
-			}
-			else{
-			 WebElement workshop_code_selected= driver.findElement(By.xpath("//div[text()='"+workshop_code_name+"']")); 
-			 workshop_code_selected.click();
-			 System.out.println("Workshop "+workshop_code_name+" selected");
-			 Thread.sleep(3000);
+			// }
+			// else{
+			//  WebElement workshop_code_selected= driver.findElement(By.xpath("//div[text()='"+workshop_code_name+"']")); 
+			//  workshop_code_selected.click();
+			//  System.out.println("Workshop "+workshop_code_name+" selected");
+			//  Thread.sleep(3000);
 			 
 
-				}
+			// 	}
 			 
 			 
 	 //policy type selection 
@@ -202,10 +218,39 @@ public class FirstTestCase {
 			 Thread.sleep(3000);
 
 	// Channel Mappings		 
-			 WebElement channel1 = driver.findElement(By.xpath("//input[@name='createL0MappingValue']"));
-			 channel1.click(); Thread.sleep(3000);
-	
+			 WebElement l0 = driver.findElement(By.xpath("//input[@name='createL0MappingValue']"));
+			 l0.click(); Thread.sleep(3000);
+			 String l0_channel =sheet.getRow(r).getCell(6).getStringCellValue();
+			 
+			 WebElement l0_selected= driver.findElement(By.xpath("//button[@class='l0maiingbtn' and contains(., '"+l0_channel+"')]")); 
+			 l0_selected.click();
+			 System.out.println("L0 "+l0_channel+" selected");
+			 Thread.sleep(3000);
 
+			 WebElement l1 = driver.findElement(By.xpath("//input[@name='createL1MappingValue']"));
+			 l1.click(); Thread.sleep(3000);
+			 String l1_channel=sheet.getRow(r).getCell(7).getStringCellValue();
+			 WebElement l1_selected= driver.findElement(By.xpath("//button[@class='l0maiingbtn' and contains(., '"+l1_channel+"')]")); 
+			 l1_selected.click();
+			 System.out.println("L1 "+l1_channel+" selected");
+			 Thread.sleep(3000);
+
+			 WebElement l2 = driver.findElement(By.xpath("//input[@name='createL2MappingValue']"));
+			 l2.click(); Thread.sleep(3000);
+			 String l2_channel=sheet.getRow(r).getCell(8).getStringCellValue();
+			 WebElement l2_selected= driver.findElement(By.xpath("//button[@class='l0maiingbtn' and contains(., '"+l2_channel+"')]"));  
+			 l2_selected.click();
+			 System.out.println("L2 "+l2_channel+" selected");
+			 Thread.sleep(3000);
+           
+             WebElement l3 = driver.findElement(By.xpath("//input[@name='createL3MappingValue']"));
+			 l3.click(); Thread.sleep(3000);
+			 String l3_channel=sheet.getRow(r).getCell(9).getStringCellValue();
+			 WebElement l3_selected= driver.findElement(By.xpath("//button[@class='l0maiingbtn' and contains(., '"+l3_channel+"')]"));  
+			 l3_selected.click();
+			 l3.click();
+			 System.out.println("L3 "+l3_channel+" selected");
+			 Thread.sleep(3000);
 			 
 	//TAT 1 selection
 			
@@ -215,9 +260,9 @@ public class FirstTestCase {
 			  tat_1hrs.click(); Thread.sleep(2000);
 			// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
 			SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
-			String timeStamp =formatTime.format(tat1hrs);
-			tat_1hrs.sendKeys(String.valueOf(timeStamp));
-            System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp)+ ".");
+			String timeStamp_tat1 =formatTime.format(tat1hrs);
+			tat_1hrs.sendKeys(String.valueOf(timeStamp_tat1));
+            System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp_tat1)+ ".");
 			Thread.sleep(3000);
 		}
 		else{
@@ -243,8 +288,78 @@ public class FirstTestCase {
 
 		}
 
-    //TAT 2 selection
-			//  WebElement tat_2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
+		//TAT 2 selection
+			
+		Date tat2hrs=sheet.getRow(r).getCell(12).getDateCellValue();
+		if(tat2hrs != null){
+		WebElement tat_2hrs = driver.findElement(By.xpath("//input[@name='TATL2Rule']"));
+		  tat_2hrs.click(); Thread.sleep(2000);
+		// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
+		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+		String timeStamp_tat2 =formatTime.format(tat2hrs);
+		tat_2hrs.sendKeys(String.valueOf(timeStamp_tat2));
+		System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp_tat2)+ ".");
+		Thread.sleep(3000);
+	}
+	else{
+				
+// TAT Format
+//WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
+//tat_format.click(); Thread.sleep(3000);  
+
+		 WebElement days_path_tat2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
+		 
+		 days_path_tat2.click(); Thread.sleep(2000);
+		 
+		 Double tat2days=sheet.getRow(r).getCell(13).getNumericCellValue();
+		  int value_tat2 = (int)Math.round(tat2days);
+		
+		
+		 days_path_tat2.sendKeys(String.valueOf(value_tat2));
+		 System.out.println("Entered TAT-1(Days) value is "+String.valueOf(value_tat2)+ ".");
+		 Thread.sleep(3000);
+
+
+
+
+	}
+
+//     //TAT 2 selection
+// 			//  WebElement tat_2 = driver.findElement(By.xpath("//TAT 2 selection
+			
+// 		Date tat2hrs=sheet.getRow(r).getCell(14).getDateCellValue();
+// 		if(tat2hrs != null){
+// 		WebElement tat_2hrs = driver.findElement(By.xpath("//input[@name='TATL2Rule']"));
+// 		  tat_2hrs.click(); Thread.sleep(2000);
+// 		// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
+// 		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+// 		String timeStamp_tat2 =formatTime.format(tat2hrs);
+// 		tat_2hrs.sendKeys(String.valueOf(timeStamp_tat2));
+// 		System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp_tat2)+ ".");
+// 		Thread.sleep(3000);
+// 	}
+// 	else{
+				
+// // TAT Format
+// //WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
+// //tat_format.click(); Thread.sleep(3000);  
+
+// 		 WebElement days_path_tat2 = driver.findElement(By.xpath("//input[@name='TATL2RuleDays']"));
+		 
+// 		 days_path_tat2.click(); Thread.sleep(2000);
+		 
+// 		 Double tat2days=sheet.getRow(r).getCell(15).getNumericCellValue();
+// 		  int value_tat2 = (int)Math.round(tat2days);
+		
+		
+// 		 days_path_tat2.sendKeys(String.valueOf(value_tat2));
+// 		 System.out.println("Entered TAT-1(Days) value is "+String.valueOf(value_tat2)+ ".");
+// 		 Thread.sleep(3000);
+
+
+
+
+// 	}//input[@name='TATL2RuleDays']"));
 			//  tat_2.click(); Thread.sleep(2000);
 			 
 			//  Double tat2=sheet.getRow(r).getCell(11).getNumericCellValue();
@@ -253,6 +368,43 @@ public class FirstTestCase {
 			//  tat_2.sendKeys(String.valueOf(value2));
 			//  System.out.println("Entered TAT-1 value is "+String.valueOf(value2)+ ".");
 			//  Thread.sleep(3000);
+
+
+			//TAT 3 selection
+			
+		Date tat3hrs=sheet.getRow(r).getCell(14).getDateCellValue();
+		if(tat3hrs != null){
+		WebElement tat_3hrs = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
+		  tat_3hrs.click(); Thread.sleep(2000);
+		// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
+		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+		String timeStamp_tat3 =formatTime.format(tat3hrs);
+		tat_3hrs.sendKeys(String.valueOf(timeStamp_tat3));
+		System.out.println("Entered TAT-1(hrs) value is "+String.valueOf(timeStamp_tat3)+ ".");
+		Thread.sleep(3000);
+	}
+	else{
+				
+// TAT Format
+//WebElement tat_format = driver.findElement(By.xpath("//input[@id='radioTATL1-Create2']"));
+//tat_format.click(); Thread.sleep(3000);  
+
+		 WebElement days_path_tat3 = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
+		 
+		 days_path_tat3.click(); Thread.sleep(2000);
+		 
+		 Double tat3days=sheet.getRow(r).getCell(15).getNumericCellValue();
+		  int value_tat3 = (int)Math.round(tat3days);
+		
+		
+		 days_path_tat3.sendKeys(String.valueOf(value_tat3));
+		 System.out.println("Entered TAT-1(Days) value is "+String.valueOf(value_tat3)+ ".");
+		 Thread.sleep(3000);
+
+
+
+
+	}
 
     //TAT 3 selection
 			//  WebElement tat_3 = driver.findElement(By.xpath("//input[@name='TATL3RuleDays']"));
@@ -265,41 +417,51 @@ public class FirstTestCase {
 			//  Thread.sleep(3000);
 			 
 	// // Save Button click 
-	// 		 WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
-	// 		 save_rule.click(); Thread.sleep(3000);
-	// 		 System.out.println("Save Clicked");
+			 WebElement save_rule = driver.findElement(By.xpath("//button[@class='saveBtnChannel misptableAnchorTagSave']"));
+			 save_rule.click(); 
+			 System.out.println("Save Clicked");
+			 Thread.sleep(1000);
+			 
 			 
 
     // Sheet status update 
 
-			//  WebElement rule_success = driver.findElement(By.xpath("//div[text()='Rule Created Successfully']"));
-			// // WebElement rule_exist = driver.findElement(By.xpath("//div[text()='Rule already exist for the given combination']"));
-			//  //create a new cell in the row at index 6
-			//  XSSFCell cell = sheet.getRow(r).createCell(13);
+			 String message = driver.findElement(By.xpath("(//*[@class='alert translate-bottom alert-success'])//div[2]")).getText();
+             //System.out.println(rule_success);
+			//WebElement rule_exist = driver.findElement(By.xpath("//div[text()='Rule already exist for the given combination']"));
+			 //create a new cell in the row 
+			 XSSFCell cell = sheet.getRow(r).createCell(16);
+			
+     
 			 
-			//  //check if confirmation message is displayed
-			//  if (rule_success.isDisplayed()) {
-			// 	 // if the message is displayed , write PASS in the excel sheet
-			// 	 cell.setCellValue("Rule created");
+			 //check if confirmation message is displayed
+			 if (message.equals("Rule successfully created")) {
+				 // if the message is displayed , write PASS in the excel sheet
+				 cell.setCellValue("Rule created");
+				 System.out.println("created rule");
 				 
-			//  }    //else if(rule_exist.isDisplayed()) {
-			// 	  //if the message is not displayed , write FAIL in the excel sheet
-			// 	 // cell.setCellValue("Already Exist");
-			//      //}
-			//  else{
-
-			// 	cell.setCellValue("FAILED");
-			//  }
-			//  // Write the data back in the Excel file
-			//  FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-			//  workbook.write(outputStream);
-			   
+			 }   
+			  else if(message.equals("Rule already exist for the given combination")) {
+				 
+				 cell.setCellValue("Already Exist");
+				 System.out.println("rule exist");
+			     }
 			 
+			 else{
+				cell.setCellValue("Failed");
+				System.out.println("Failed");
+
+			}
+			 // Write the data back in the Excel file
+			 FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+			 workbook.write(outputStream);
+			   
+			 Thread.sleep(4000);
 			  
 			
 			 
 			 }
-			 
+			 driver.quit();
 			 
 	}}
 
