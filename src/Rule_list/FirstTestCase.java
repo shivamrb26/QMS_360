@@ -95,16 +95,17 @@ public class FirstTestCase {
 			 Thread.sleep(60000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
-			 Thread.sleep(10000);
+			 Thread.sleep(12000);
+			
 			 WebElement ops_rule=driver.findElement(By.xpath("//button[@id='opsId']"));
 			 ops_rule.click();
-			 Thread.sleep(2000);
+			 Thread.sleep(4000);
 			 
-			 for (int r=16;r<=rowCount;r++)
+			 for (int r=1;r<=rowCount;r++)
 			 {
-Thread.sleep(6000);
-WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
-Boolean visible = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.and(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
+            Thread.sleep(6000); 
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
+            Boolean visible = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.and(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
 				ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
 				ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]"))));
 
