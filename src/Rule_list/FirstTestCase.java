@@ -95,31 +95,49 @@ public class FirstTestCase {
 			 Thread.sleep(60000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
-			 Thread.sleep(12000);
+			 
+			 List<WebElement> elm;
+			 elm = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
+			 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			 while (elm.size() > 0) {
+				 elm = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
+			 }
+			 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(45));
+			 System.out.println("while end");
+			 Thread.sleep(3000);
 			
 			 WebElement ops_rule=driver.findElement(By.xpath("//button[@id='opsId']"));
 			 ops_rule.click();
 			 Thread.sleep(4000);
 			 
-			 for (int r=1;r<=rowCount;r++)
+			 for (int r=30;r<=rowCount;r++)
 			 {
-            Thread.sleep(6000); 
+            
+			List<WebElement> elm1;
+        elm1 = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        while (elm1.size() > 0) {
+            elm1 = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
+        }
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        System.out.println("while end");
+		// Thread.sleep(15000);
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-            Boolean visible = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.and(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
-				ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
-				ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]"))));
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]"))).click();
+            //Boolean visible = wait.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.and(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
+			//	ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")),
+			//	ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]"))));
 
-			 WebElement createrule = driver.findElement(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")); 
+			// WebElement createrule = driver.findElement(By.xpath("//button[@class='text-light main-btn createChannelBtn' and contains(., ' Create New Rule')]")); 
 			// WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 		     //WebElement element = wait.until(ExpectedConditions.elementToBeClickable(createrule));
-			if(visible==true){createrule.click(); 
-				Thread.sleep(3000);}
+			
 			 
 			// WebElement element=driver.findElement(By.xpath("//table[@class='table word-warp table-space']/tbody//tr[last()]"));
 			 //JavascriptExecutor js = (JavascriptExecutor)driver;
 			 //js.executeScript("arguments[0].scrollIntoView();", element);
 			 
-			//  Thread.sleep(3000);
+			  Thread.sleep(1000);
 			 
 		  // MISP Name selection  
 			 WebElement misp_name = driver.findElement(By.
@@ -154,7 +172,7 @@ public class FirstTestCase {
 			 WebElement dealer_code_selected= driver.findElement(By.xpath("//div[text()='"+dealer_code_name+"']")); 
 			 dealer_code_selected.click();
 			System.out.println("Dealer "+dealer_code_name+" selected");
-			Thread.sleep(3000);
+			Thread.sleep(4000);
 			
 	// Workshop code selected
 	        
@@ -178,27 +196,27 @@ public class FirstTestCase {
 			 
 	 //policy type selection 
 			 WebElement policy_type1 = driver.findElement(By.xpath("//input[@class='checkboxmisp' and @name='rulePolicyType+1']"));
-			 policy_type1.click(); Thread.sleep(3000);
+			 policy_type1.click(); 
 			 System.out.println("policy_type1 selected");
-			 
+			 Thread.sleep(2000);
 			 WebElement policy_type2 = driver.findElement(By.xpath("//input[@class='checkboxmisp' and @name='rulePolicyType+2']"));
-			 policy_type2.click(); Thread.sleep(3000);
-			 System.out.println("policy_type2 selected");
+			 policy_type2.click(); 
+			 System.out.println("policy_type2 selected");Thread.sleep(1500);
 			 
 	 // IC Selection
 			 WebElement ic_name = driver.findElement(By.xpath("//span[text()='IC Name']"));
-			 ic_name.click(); Thread.sleep(2000);
+			 ic_name.click(); 
 			 
 			 String ic=sheet.getRow(r).getCell(3).getStringCellValue();
 				
 			 WebElement ic_name_selected= driver.findElement(By.xpath("//div[text()='"+ic+"']")); 
 			 ic_name_selected.click();
 			 System.out.println("IC "+ic+" selected");
-			 Thread.sleep(3000);
+			 Thread.sleep(500);
 			 
 	 // Issue Type Selection
 			 WebElement issue_type = driver.findElement(By.xpath("//span[text()='Issue Type']"));
-			 issue_type.click(); Thread.sleep(2000);
+			 issue_type.click(); Thread.sleep(100);
 
 			 String issue=sheet.getRow(r).getCell(4).getStringCellValue();
 				
@@ -209,7 +227,7 @@ public class FirstTestCase {
 
 	 // Issue sub-Type Selection
 			 WebElement issue_subtype = driver.findElement(By.xpath("//span[text()='Issue Sub Type']"));
-			 issue_subtype.click(); Thread.sleep(2000);
+			 issue_subtype.click(); Thread.sleep(3000);
 
 			 String sub_issue=sheet.getRow(r).getCell(5).getStringCellValue();
 				
