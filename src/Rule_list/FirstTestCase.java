@@ -35,7 +35,7 @@ import io.netty.handler.codec.marshalling.ThreadLocalUnmarshallerProvider;
 public class FirstTestCase {
 	
 
-	public static void main(String[] args) throws InterruptedException, IOException,NullPointerException {
+	public static void main(String[] args) throws InterruptedException, IOException,NullPointerException,FileNotFoundException {
 		String excelFilePath="/home/shivamsharma/Downloads/Rule Creation1.xls";
 	   
 		   
