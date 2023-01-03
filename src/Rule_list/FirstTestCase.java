@@ -110,7 +110,7 @@ public class FirstTestCase {
 			 ops_rule.click();
 			 Thread.sleep(4000);
 			 
-			 for (int r=30;r<=rowCount;r++)
+			 for (int r=1;r<=rowCount;r++)
 			 {
             
 			List<WebElement> elm1;
