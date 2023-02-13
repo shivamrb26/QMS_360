@@ -2,35 +2,24 @@ package Rule_list;
 
 
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import Excel_Functions.Excel_Functions;
-import io.netty.handler.codec.marshalling.ThreadLocalUnmarshallerProvider;
 
 public class FirstTestCase {
 	
@@ -67,7 +56,8 @@ public class FirstTestCase {
 					*/
 			  
 		   
-			 System.setProperty("webdriver.chrome.driver","/home/shivamsharma/Downloads/chromedriver"); 
+			 System.setProperty("webdriver.chrome.driver","/home/shivamsharma/Downloads/chromedriver");
+			 
 	      	 WebDriver driver = new ChromeDriver();
 			 driver.manage().window().maximize();
 			 driver.get("https://www.renewbuy.com/qms360/");
@@ -85,14 +75,14 @@ public class FirstTestCase {
 			 Thread.sleep(2000);
 			 
 			 loginBtn.click(); 
-			 
+			 System.out.println("Logged In");
 			 Thread.sleep(2000); 
 			 WebElement admin =driver.findElement(By.xpath("//span[text()='Admin']")); 
 			 admin.click();
 			 Thread.sleep(2000);
 			 WebElement master_list = driver.findElement(By.xpath("//span[@class='d-none f-14 d-lg-inline fontsubmenu' and contains(., 'Master List')]")); 
 			 master_list.click(); 
-			 Thread.sleep(60000);
+			 Thread.sleep(20000);
 			 WebElement rule_list = driver.findElement(By.xpath("//label[text()='Rule list']"));
 			 rule_list.click();
 			 
@@ -102,20 +92,17 @@ public class FirstTestCase {
 			 while (elm.size() > 0) {
 				 elm = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
 			 }
-			 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(45));
+			 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(25));
 			 System.out.println("while end");
 			 Thread.sleep(3000);
-			
-			 WebElement ops_rule=driver.findElement(By.xpath("//button[@id='opsId']"));
-			 ops_rule.click();
-			 Thread.sleep(4000);
+	
 			 
-			 for (int r=1;r<=rowCount;r++)
+			 for (int r=5142 ;r<=rowCount;r++)
 			 {
             
 			List<WebElement> elm1;
         elm1 = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         while (elm1.size() > 0) {
             elm1 = driver.findElements(By.xpath("//*[@class='ngx-background-spinner bottom-right loading-background']"));
         }
@@ -149,7 +136,7 @@ public class FirstTestCase {
 			 }
 			// String mispnew=mispname.toUpperCase();
 			// System.out.println(mispnew);
-			WebElement misp_name_search = driver.findElement(By.xpath("//li//input[@placeholder='Search']"));
+			//WebElement misp_name_search = driver.findElement(By.xpath("//li//input[@placeholder='Search']"));
 		   
 	   //	  misp_name_search.click();
 			// misp_name_search.sendKeys(mispname);
@@ -169,29 +156,29 @@ public class FirstTestCase {
 			 if (dealer_code_name.equals("All")){
 				dealer_code_name="Select All";
 			 }
-			 WebElement dealer_code_selected= driver.findElement(By.xpath("//div[text()='"+dealer_code_name+"']")); 
+			 WebElement dealer_code_selected= driver.findElement(By.xpath("//div[text()='"+dealer_code_name.toLowerCase()+"']")); 
 			 dealer_code_selected.click();
 			System.out.println("Dealer "+dealer_code_name+" selected");
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 			
 	// Workshop code selected
 	        
-			//  WebElement workshop_code = driver.findElement(By.xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
-			//  workshop_code.click(); Thread.sleep(3000);
-			//  String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue();
-			// if(workshop_code_name.isEmpty()){
+			 WebElement workshop_code = driver.findElement(By.xpath("//span[@class='dropdown-btn']//span[text()='Workshop Code']"));
+			 workshop_code.click(); Thread.sleep(3000);
+			 String workshop_code_name=sheet.getRow(r).getCell(2).getStringCellValue();
+			if(workshop_code_name.isEmpty()){
 
-			// 	workshop_code.click(); Thread.sleep(1000);
+				workshop_code.click(); Thread.sleep(1000);
 
-			// }
-			// else{
-			//  WebElement workshop_code_selected= driver.findElement(By.xpath("//div[text()='"+workshop_code_name+"']")); 
-			//  workshop_code_selected.click();
-			//  System.out.println("Workshop "+workshop_code_name+" selected");
-			//  Thread.sleep(3000);
+			}
+			else{
+			 WebElement workshop_code_selected= driver.findElement(By.xpath("//div[text()='"+workshop_code_name.toLowerCase()+"']")); 
+			 workshop_code_selected.click();
+			 System.out.println("Workshop "+workshop_code_name+" selected");
+			 Thread.sleep(3000);
 			 
 
-			// 	}
+				}
 			 
 			 
 	 //policy type selection 
@@ -275,6 +262,8 @@ public class FirstTestCase {
 			
 			Date tat1hrs=sheet.getRow(r).getCell(10).getDateCellValue();
 			if(tat1hrs != null){
+				WebElement tat_format_hrs = driver.findElement(By.xpath("//input[@id='radioTATL1-Create1']"));
+				tat_format_hrs.click(); Thread.sleep(3000); 
 			WebElement tat_1hrs = driver.findElement(By.xpath("//input[@name='TATL1Rule']"));
 			  tat_1hrs.click(); Thread.sleep(2000);
 			// Date tat1=sheet.getRow(r).getCell(10).getDateCellValue();
@@ -480,6 +469,7 @@ public class FirstTestCase {
 			
 			 
 			 }
+			 System.out.println("Rules creation Finished");
 			 driver.quit();
 			 
 	}}
